@@ -1,9 +1,9 @@
- 
+
  @extends('template.app')
- 
- 
+
+
  @section('content')
- 
+
  <div id="content">
 
     <!-- Topbar -->
@@ -18,7 +18,7 @@
         <!-- Page Heading -->
         <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Produk</h1>
-            
+
         </div>
 
         <div class="card">
@@ -35,7 +35,7 @@
                             </ul>
                         </div>
                     @endif
-                        
+
                     <form action="{{ route('produk.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group row">
@@ -62,19 +62,25 @@
                                 <input type="text" name="harga" class="form-control " placeholder="Harga" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                             </div>
                         </div>
+                        <div class="form-group row">
+                            <label for="nama" class="col-sm-2 col-form-label text-right "><strong>Modal</strong></label>
+                            <div class="col-sm-10">
+                                <input type="text" name="modal" class="form-control " placeholder="Modal" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                            </div>
+                        </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                            
+
                                 <a style="width: 80px" class="btn btn-primary" href="{{ url('produk')}}">Batal</a>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
-                        
+
                     </form>
                 </div>
-                
+
             </div>
             <div class="card-footer"> </div>
         </div>
-       
+
 
     </div>
     <!-- /.container-fluid -->

@@ -6,6 +6,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProdukController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\BerandaController;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,9 @@ Route::resource('user', UsersController::class)->middleware('can:isAdmin');
 
 // produk
 Route::resource('produk', ProdukController::class)->middleware('can:isAdmin');
+
+// Laporan
+Route::resource('laporan', LaporanController::class)->middleware('can:isAdmin');
 
 // order
 Route::group(['prefix' => 'order'], function () {

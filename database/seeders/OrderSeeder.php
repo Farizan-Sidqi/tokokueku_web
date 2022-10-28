@@ -19,7 +19,7 @@ class OrderSeeder extends Seeder
      */
     public function run()
     {
-       for ($i=0; $i < 14; $i++) {
+       for ($i=0; $i < 21; $i++) {
         $tanggal = now()->day(10 + $i)->hour(rand(00, 23))->minute(rand(00, 58));
         // $tanggal = now()->setDateTime(2022, 10, (17 + $i), rand(00, 58), rand(00, 58));
         Order::factory(rand(1,5))->create([

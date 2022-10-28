@@ -42,6 +42,7 @@
                     <h6 class="collapse-header">Menu item:</h6>
                     <a class="collapse-item" href="{{ url('user') }}">User</a>
                     <a class="collapse-item" href="{{ url('produk') }}">Produk</a>
+                    <a class="collapse-item" href="{{ url('laporan') }}">Laporan</a>
                 </div>
             </div>
         </li>

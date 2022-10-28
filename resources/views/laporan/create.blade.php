@@ -1,7 +1,6 @@
-
- @extends('template.app')
-
-
+@extends('template.app')
+ <link href="{{ asset('assets/css/sweetalert2.min.css') }}">
+ @section('title', 'Produk')
  @section('content')
 
  <div id="content">
@@ -22,7 +21,7 @@
         </div>
 
         <div class="card">
-            <div class="card-header">Form Edit Produk</div>
+            <div class="card-header">Form Produk Baru</div>
             <div class="card-body">
                 <div class="card-body">
                     @if ($errors->any())
@@ -36,42 +35,35 @@
                         </div>
                     @endif
 
-                    <form action="{{ route('produk.update',$produk->id) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('laporan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
-
                         <div class="form-group row">
                             <label for="nama" class="col-sm-2 col-form-label text-right"><strong>Nama Produk</strong></label>
                             <div class="col-sm-10">
-                                <input type="text" name="nama" value="{{ $produk->nama }}" class="form-control" placeholder="Nama Produk">
+                                <input type="text" name="nama" class="form-control" placeholder="Nama Produk">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="nama" class="col-sm-2 col-form-label text-right "><strong>Deskripsi</strong></label>
                             <div class="col-sm-10">
-                                <textarea class="form-control" style="height:70px" name="deskripsi" placeholder="Detail">{{ $produk->deskripsi }}</textarea>
+                                <textarea class="form-control" style="height:70px" name="deskripsi" placeholder="Detail"></textarea>
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="nama" class="col-sm-2 col-form-label text-right "><strong>Foto</strong></label>
                             <div class="col-sm-10">
                                 <input type="file" name="foto" class="form-control" placeholder="foto">
-                                <img src="/foto/{{ $produk->foto }}" width="100px">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label for="nama" class="col-sm-2 col-form-label text-right "><strong>Harga</strong></label>
                             <div class="col-sm-10">
-                                <input type="text" name="harga" value ="{{ $produk->harga }}" class="form-control" placeholder="Harga" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label for="nama" class="col-sm-2 col-form-label text-right "><strong>Modal</strong></label>
-                            <div class="col-sm-10">
-                                <input type="text" name="modal" value ="{{ $produk->modal }}" class="form-control " placeholder="Modal" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
+                                <input type="text" name="harga" class="form-control " placeholder="Harga" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');">
                             </div>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+
+                                <a style="width: 80px" class="btn btn-primary" href="{{ url('laporan')}}">Batal</a>
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
 
