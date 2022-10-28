@@ -22,9 +22,9 @@ class Order extends Model
         'created_at',
         'updated_at'
     ];
-    // protected $dates = [
-    //     'tgl_order'
-    // ];
+    protected $dates = [
+        'tgl_order'
+    ];
 
     public function user()
     {
@@ -37,4 +37,8 @@ class Order extends Model
         //return $this->hasMany(OrderDetail::class, 'order_id');
     }
 
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class);
+    }
 }

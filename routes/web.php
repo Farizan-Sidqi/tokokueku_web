@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::group(['middleware' => 'guest'], function() {
+Route::group(['middleware' => 'guest'], function () {
     Route::get('/lupa-password', [AuthController::class, 'getForgetPassword'])->name('getForgetPassword');
     Route::get('/login', [AuthController::class, 'getLogin'])->name('login');
     Route::post('/login', [AuthController::class, 'doLogin']);
@@ -48,24 +48,31 @@ Route::resource('user', UsersController::class)->middleware('can:isAdmin');
 Route::resource('produk', ProdukController::class)->middleware('can:isAdmin');
 
 // order
-Route::group(['prefix' => 'order'], function() {
+Route::group(['prefix' => 'order'], function () {
     Route::patch('/{order}/update-status', [OrderController::class, 'updateStatus'])->middleware('can:isAdmin');
     Route::get('/{order}/print', [OrderController::class, 'print'])->name('order.print')->middleware('auth');
-
 });
 
 Route::resource('order', OrderController::class);
 
 
 Route::get('/', function () {
-    if (Auth::check()){
+    if (Auth::check()) {
         return redirect('/beranda');
     }
     //return view('welcome');
     return redirect('/login');
 });
 
+Route::get('/pay/{order}', [OrderController::class, 'pay'])->name('order.pay');
+Route::post('/pay/{order}', [OrderController::class, 'callback'])->name('order.callback');
+Route::get('/pay/status/process', function () {
+    $type = 'Process';
+    return view('order.response', compact('type'));
+})->name('order.success');
+Route::get('/pay/status/unfinish', function () {
+    $type = 'Unfinish';
+    return view('order.response', compact('type'));
+})->name('order.unfinish');
 
 Route::resource('beranda', BerandaController::class)->middleware('auth');
-
-

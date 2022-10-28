@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use DB;
-use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Order;
@@ -11,7 +9,9 @@ use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\ProgramResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -23,7 +23,7 @@ class OrderController extends Controller
 
     public function __construct()
     {
-       // $this->middleware('auth');
+        // $this->middleware('auth');
     }
 
     public function index()
@@ -70,7 +70,6 @@ class OrderController extends Controller
 
         try {
             $order = Order::create([
-                //'user_id' => auth()->user()->id,
                 'user_id' => $request->user_id,
                 'total_qty' => $total_qty,
                 'total_harga' => $total_harga,
@@ -79,7 +78,7 @@ class OrderController extends Controller
                 'tgl_order' => date('Y-m-d H:i:s')
             ]);
 
-            foreach($produk_order as $p) {
+            foreach ($produk_order as $p) {
                 OrderDetail::create([
                     'order_id' => $order->id,
                     'nama_makanan' => $p->nama,
@@ -90,7 +89,7 @@ class OrderController extends Controller
             }
 
             DB::commit();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             DB::rollback();
 
             return response()->json([

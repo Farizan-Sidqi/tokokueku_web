@@ -26,7 +26,6 @@ class User extends Authenticatable
         'level',
         'foto',
         'status'
-        
     ];
 
     protected $dates = [
