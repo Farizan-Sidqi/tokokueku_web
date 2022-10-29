@@ -19,21 +19,20 @@ class AuthController extends Controller
     }
 
     public function doLogin(Request $request)
-    {          
+    {
         $credentials = [
             'email' => $request->email,
             'password' => $request->password,
             'status' => 'aktif'
         ];
 
-        if(auth()->attempt($credentials)) {
-            
+        if (auth()->attempt($credentials)) {
+
 
             return redirect('/beranda');
         }
 
         return redirect()->back()->with('status', 'username atau password salah');
-
     }
 
     public function getRegister()
@@ -43,7 +42,7 @@ class AuthController extends Controller
 
     public function doRegister(Request $request)
     {
-        dd($request->all());
+        dd($request->all(), bcrypt($request->password));
         User::create([
             'nama' => $request->nama,
             'username' => $request->username,
@@ -58,12 +57,9 @@ class AuthController extends Controller
 
     public function doLogout()
     {
-        
+
         auth()->logout();
 
         return redirect('/login');
     }
-
-
-    
 }

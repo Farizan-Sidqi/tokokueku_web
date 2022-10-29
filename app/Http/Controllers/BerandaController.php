@@ -32,6 +32,16 @@ class BerandaController extends Controller
                 ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
                 ->where('is_paid', 1)
                 ->sum('order.total_harga');
+
+            $modalpenjualanMingguIni = Order::where("is_paid", true)
+                ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->get()->map(function ($item) {
+                    return $item->orderDetail->reduce(function ($total, $orderItem) {
+                        return $total += $orderItem->modal * $orderItem->qty;
+                    }, 0);
+                })->sum();
+
+            $labaBersih = $penjualanMingguIni - $modalpenjualanMingguIni;
+
             $itemTerjualMingguIni = DB::table('order')
                 ->select('total_qty')
                 ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
@@ -66,7 +76,7 @@ class BerandaController extends Controller
                 });
             })->toArray());
 
-            return view('beranda.beranda_admin', compact('produk', 'penjualanMingguIni', 'itemTerjualMingguIni', 'orderMingguIni', 'user', 'labels', 'data', 'weekdata', 'weeklabels'));
+            return view('beranda.beranda_admin', compact('produk', 'penjualanMingguIni', 'itemTerjualMingguIni', 'orderMingguIni', 'user', 'labels', 'data', 'weekdata', 'weeklabels', 'labaBersih'));
         } else {
             $data = Order::with(['user' => function ($query) {
                 $query->select('id', 'nama', 'no_wa', 'email');

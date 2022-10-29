@@ -56,9 +56,9 @@
                                     </form>
                                     <hr>
 
-                                    <div class="text-center">
+                                    {{-- <div class="text-center">
                                         <a class="small" href="{{ url('register') }}">Belum punya akun? Daftar Akun!</a>
-                                    </div>
+                                    </div> --}}
 
                                 </div>
                             </div>

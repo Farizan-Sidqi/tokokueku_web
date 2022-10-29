@@ -23,9 +23,6 @@ class Order extends Model
         'created_at',
         'updated_at'
     ];
-    protected $dates = [
-        'tgl_order'
-    ];
 
     public function user()
     {

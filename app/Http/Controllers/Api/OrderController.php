@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\ProgramResource;
+use App\Models\Produk;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
@@ -79,12 +80,14 @@ class OrderController extends Controller
             ]);
 
             foreach ($produk_order as $p) {
+                $produk = Produk::where('nama', $p->nama)->first();
                 OrderDetail::create([
                     'order_id' => $order->id,
                     'nama_makanan' => $p->nama,
                     'harga_makanan' => $p->harga,
                     'qty' => $p->qty,
-                    'harga_total' => $p->total_harga
+                    'harga_total' => $p->total_harga,
+                    'modal' => $produk->modal,
                 ]);
             }
 
