@@ -19,6 +19,7 @@ class Order extends Model
         'alamat_antar',
         'tgl_order',
         'status',
+        'is_paid',
         'created_at',
         'updated_at'
     ];

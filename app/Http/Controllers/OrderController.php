@@ -191,6 +191,12 @@ class OrderController extends Controller
             'response' => $request->callback
         ]);
 
+        if (in_array($response['transaction_status'], ['capture', 'settlement'])) {
+            $order->update([
+                'is_paid' => true
+            ]);
+        }
+
         return redirect()->route('order.success');
     }
 
@@ -225,6 +231,12 @@ class OrderController extends Controller
             $message = "Payment using " . $type . " for transaction order_id: " . $order_id . " is expired.";
         } else if ($transaction == 'cancel') {
             $message = "Payment using " . $type . " for transaction order_id: " . $order_id . " is canceled.";
+        }
+
+        if (in_array($transaction, ['capture', 'settlement'])) {
+            $transaction->order()->update([
+                'is_paid' => true
+            ]);
         }
 
         $transactions->transaction_status = $transaction;

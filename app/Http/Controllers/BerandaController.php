@@ -30,10 +30,12 @@ class BerandaController extends Controller
             $penjualanMingguIni = DB::table('order')
                 ->select('total_harga')
                 ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->where('is_paid', 1)
                 ->sum('order.total_harga');
             $itemTerjualMingguIni = DB::table('order')
                 ->select('total_qty')
                 ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->where('is_paid', 1)
                 ->sum('order.total_qty');
             $orderMingguIni = DB::table('order')
                 ->select('created_at')
@@ -41,6 +43,7 @@ class BerandaController extends Controller
                 ->count('order.created_at');
 
             $byweek = Order::select(DB::raw('sum(total_harga) as `total_penjulan`'), DB::raw("WEEKOFYEAR(tgl_order) AS week_of_year"))
+                ->where('is_paid', 1)
                 ->whereBetween(DB::raw("WEEKOFYEAR(tgl_order)"), [$mulai, $saatini])
                 ->groupby('week_of_year')
                 //->get();
@@ -51,13 +54,14 @@ class BerandaController extends Controller
 
             $labels = now()->getDays();
             $result = DB::table('order')
-            ->select("tgl_order", "total_harga")
-            ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
-            ->get()
-            ->groupBy('tgl_order');
+                ->select("tgl_order", "total_harga")
+                ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->where('is_paid', 1)
+                ->get()
+                ->groupBy('tgl_order');
 
             $data = array_values($result->map(function ($item) {
-                return $item->reduce(function ($total, $item){
+                return $item->reduce(function ($total, $item) {
                     return $total += $item->total_harga;
                 });
             })->toArray());
