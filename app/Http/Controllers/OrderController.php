@@ -148,9 +148,11 @@ class OrderController extends Controller
             // Set 3DS transaction for credit card to true
             \Midtrans\Config::$is3ds = true;
 
+            $order_number = $order->id . '-' . time();
+
             $params = array(
                 'transaction_details' => array(
-                    'order_id' => $order->id . '-' . time(),
+                    'order_id' => $order_number,
                     'gross_amount' => $order->total_harga,
                 ),
                 'customer_details' => array(
@@ -165,6 +167,7 @@ class OrderController extends Controller
 
             $order->transaction()->create([
                 'snap_token' => $snapToken,
+                'mt_order_id' => $order_number
             ]);
         } else {
             $snapToken = $order->transaction->snap_token;
@@ -177,6 +180,61 @@ class OrderController extends Controller
     {
         $response = json_decode($request->callback, true);
 
-        dd($response);
+        $order->transaction()->update([
+            'mt_transaction_id' => $response['transaction_id'] ?? null,
+            'transaction_status' => $response['transaction_status'],
+            'status_message' => $response['status_message'] ?? null,
+            'payment_type' => $response['payment_type'] ?? null,
+            'payment_code' => $response['payment_code'] ?? null,
+            'code' => $response['code'] ?? null,
+            'settlement_time' => $response['settlement_time'] ?? null,
+            'response' => $request->callback
+        ]);
+
+        return redirect()->route('order.success');
+    }
+
+    public function notification()
+    {
+        \Midtrans\Config::$isProduction = false;
+        \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+        $notif = new \Midtrans\Notification();
+
+        $transaction = $notif->transaction_status;
+        $type = $notif->payment_type;
+        $order_id = $notif->order_id;
+        $fraud = $notif->fraud_status;
+
+        $transactions = Transaction::where('mt_order_id', $order_id)->get()->first();
+
+        if ($transaction == 'capture') {
+            if ($type == 'credit_card') {
+                if ($fraud == 'challenge') {
+                    $message = "Transaction order_id: " . $order_id . " is challenged by FDS";
+                } else {
+                    $message = "Transaction order_id: " . $order_id . " successfully captured using " . $type;
+                }
+            }
+        } else if ($transaction == 'settlement') {
+            $message = "Transaction order_id: " . $order_id . " successfully transfered using " . $type;
+        } else if ($transaction == 'pending') {
+            $message = "Waiting customer to finish transaction order_id: " . $order_id . " using " . $type;
+        } else if ($transaction == 'deny') {
+            $message = "Payment using " . $type . " for transaction order_id: " . $order_id . " is denied.";
+        } else if ($transaction == 'expire') {
+            $message = "Payment using " . $type . " for transaction order_id: " . $order_id . " is expired.";
+        } else if ($transaction == 'cancel') {
+            $message = "Payment using " . $type . " for transaction order_id: " . $order_id . " is canceled.";
+        }
+
+        $transactions->transaction_status = $transaction;
+        $transactions->status_message = $message;
+        $transactions->payment_type = $type;
+        $transactions->payment_code = '';
+        $transactions->store = $notif->store ?? '';
+        $transactions->settlement_time = $notif->settlement_time;
+        $transactions->save();
+
+        return response()->json(['status' => 'success']);
     }
 }

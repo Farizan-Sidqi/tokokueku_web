@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\OrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 // use App\Http\Controllers\Api\AuthController;
@@ -25,12 +26,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 //Route::group(['middleware' => ['auth:sanctum']], function() {
 //	Route::get('/get-profile/{id}', [\App\Http\Controllers\Api\AuthController::class, 'getProfile']);
-	//api/blog/{friendly-url} OR {id}
-	
-	Route::get('/get-profile/{id}', 'App\Http\Controllers\Api\AuthController@getProfile');
-	Route::post('/update-profile/{id}', 'App\Http\Controllers\Api\AuthController@updateProfile');
-
-
+//api/blog/{friendly-url} OR {id}
+Route::get('/get-profile/{id}', 'App\Http\Controllers\Api\AuthController@getProfile');
+Route::post('/update-profile/{id}', 'App\Http\Controllers\Api\AuthController@updateProfile');
 //});
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -39,10 +37,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::get('/produk', [\App\Http\Controllers\Api\ProdukController::class, 'loadData']);
 
-
 // order
-
 Route::post('/order/store', [\App\Http\Controllers\Api\OrderController::class, 'store']);
 
-
-
+Route::post('/notification', [OrderController::class, 'notification']);

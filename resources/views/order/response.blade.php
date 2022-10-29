@@ -69,7 +69,24 @@
                     <div class="content py-4">
                         @if ($type == 'Process')
                             <h5>Pembayaran sedang diproses!</h5>
-                            <small>{{ $message ?? 'Terima Kasih...' }}</small>
+                            <small>{{ $message ?? 'Terima Kasih' }}<span id="progress"></span></small>
+                            <script>
+                                const progress = document.getElementById('progress');
+                                let loading = 0;
+                                setInterval(() => {
+                                    let dot = '.'
+                                    if (loading > 3) loading = 0
+                                    for (let i = 0; i < loading; i++) {
+                                        dot += '.'
+                                    }
+                                    progress.innerHTML = dot
+                                    loading++
+                                }, 500);
+
+                                setTimeout(() => {
+                                    window.location.href = "{{ route('redirect.mobile') }}"
+                                }, 5000);
+                            </script>
                         @endif
                         @if ($type == 'Unfinish')
                             <h5>Pembayaran belum diselesaikan!</h5>
@@ -79,6 +96,10 @@
                                 <a href="{{ route('order.pay', request('order_id')) }}"
                                     class="btn btn-sm btn-warning"><i class="fas fa-fw fa-credit-card"></i> Bayar
                                     Kembali</a>
+                                <a href="{{ route('redirect.mobile') }}"
+                                    onclick="return confirm('apakah anda akan yakin untuk membatalkan pesanan?')"
+                                    class="btn btn-sm btn-danger"><i class="fas fa-fw fa-times"></i> Batalkan
+                                    Pesanan</a>
                             @endif
                         @endif
                     </div>

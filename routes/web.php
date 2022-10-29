@@ -79,4 +79,8 @@ Route::get('/pay/status/unfinish', function () {
     return view('order.response', compact('type'));
 })->name('order.unfinish');
 
+Route::get('/back-to-mobile', function () {
+    return 'back to device';
+})->name('redirect.mobile');
+
 Route::resource('beranda', BerandaController::class)->middleware('auth');
