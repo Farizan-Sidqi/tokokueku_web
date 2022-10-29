@@ -234,7 +234,7 @@ class OrderController extends Controller
         }
 
         if (in_array($transaction, ['capture', 'settlement'])) {
-            $transaction->order()->update([
+            $transactions->order()->update([
                 'is_paid' => true
             ]);
         }
