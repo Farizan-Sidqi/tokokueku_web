@@ -52,7 +52,7 @@
                                             id="exampleRepeatPassword" placeholder="Ulangi Password" required>
                                     </div>
                                 </div>
-                                <button class="btn btn-primary btn-user btn-block">Daftar</button>
+                                <button class="btn btn-primary btn-user btn-block">Register</button>
 
                             </form>
                             <hr>
