@@ -75,7 +75,7 @@ class OrderController extends Controller
                 'total_harga' => $total_harga,
                 'catatan' => $catatan,
                 'alamat_antar' => $alamat_antar,
-                'tgl_order' => date('Y-m-d H:i:s')
+                'tgl_order' => now()->format('Y-m-d H:i:s')
             ]);
 
             foreach ($produk_order as $p) {
