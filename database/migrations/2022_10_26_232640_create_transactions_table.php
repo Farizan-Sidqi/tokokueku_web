@@ -23,7 +23,7 @@ return new class extends Migration
             $table->string('status_message')->nullable();
             $table->string('payment_type')->nullable();
             $table->string('payment_code')->nullable();
-            $table->string('code')->nullable();
+            $table->string('store')->nullable();
             $table->time('settlement_time')->nullable();
             $table->text('response')->nullable();
             $table->timestamps();

@@ -186,7 +186,7 @@ class OrderController extends Controller
             'status_message' => $response['status_message'] ?? null,
             'payment_type' => $response['payment_type'] ?? null,
             'payment_code' => $response['payment_code'] ?? null,
-            'code' => $response['code'] ?? null,
+            'store' => $response['store'] ?? null,
             'settlement_time' => $response['settlement_time'] ?? null,
             'response' => $request->callback
         ]);

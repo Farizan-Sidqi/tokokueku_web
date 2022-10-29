@@ -18,7 +18,7 @@ class Transaction extends Model
         'status_message',
         'payment_type',
         'payment_code',
-        'code',
+        'store',
         'settlement_time',
         'response'
     ];
