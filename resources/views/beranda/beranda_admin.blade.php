@@ -144,7 +144,7 @@
                 </div>
 
             </div>
-            <small class="d-block mt-2">*Perhitungan laba dalam minggu</small>
+            <small class="d-block mt-2">*Perhitungan laba dan modal dalam minggu</small>
             <!-- Content Row -->
 
             <div class="row mt-4">
