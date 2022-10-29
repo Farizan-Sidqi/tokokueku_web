@@ -64,6 +64,14 @@
                                      <strong>Catatan</strong>
                                      <span>{{ $order->catatan ? $order->catatan : '-' }}</span>
                                  </li>
+                                 <li class="list-group-item d-flex justify-content-between flex-wrap pl-0">
+                                     <strong>Status Pembayaran</strong>
+                                     <span>{{ $order->transaction->transaction_status ?? '-' }}</span>
+                                 </li>
+                                 <li class="list-group-item d-flex justify-content-between flex-wrap pl-0">
+                                     <strong>Metode Pembayaran</strong>
+                                     <span>{{ $order->transaction->payment_type ?? '-' }}</span>
+                                 </li>
                              </ul>
                          </div>
                      </div>
