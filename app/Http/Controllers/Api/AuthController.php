@@ -85,8 +85,8 @@ class AuthController extends Controller
     public function getProfile($id)
     {
 
-    //   $user = User::where('id', $id)->first();
-      $user = auth()->user()->id;
+     $user = User::where('id', $id)->first();
+
 
 
         # $user_id = auth()->user()->id;
