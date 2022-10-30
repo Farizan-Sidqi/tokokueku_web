@@ -86,7 +86,7 @@ class AuthController extends Controller
     {
 
     //   $user = User::where('id', $id)->first();
-      $user = User::where('id', $id);
+      $user = auth()->user()->id;
 
 
         # $user_id = auth()->user()->id;
