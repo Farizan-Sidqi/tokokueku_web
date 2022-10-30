@@ -28,7 +28,6 @@ class AuthController extends Controller
             'email' => 'required|string|max:200|unique:users',
             'password' => 'required|string|min:8',
 
-
         ]);
 
         if ($validator->fails()) {
@@ -86,7 +85,9 @@ class AuthController extends Controller
     public function getProfile($id)
     {
 
-      $user = User::where('id', $id)->first();
+    //   $user = User::where('id', $id)->first();
+      $user = User::where('id', $id);
+
 
         # $user_id = auth()->user()->id;
 
