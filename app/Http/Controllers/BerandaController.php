@@ -23,18 +23,21 @@ class BerandaController extends Controller
             $saatini = Carbon::now()->format('W');
             $mulai = $saatini - 12;
 
-            Carbon::setWeekStartsAt(Carbon::SUNDAY);
+            Carbon::setWeekStartsAt(Carbon::MONDAY);
+
+            $startWeek = now()->startOfWeek()->format('Y-m-d');
+            $endWeek = now()->endOfWeek()->format('Y-m-d');
 
             $produk = Produk::all()->count();
             $user = User::all()->count();
             $penjualanMingguIni = DB::table('order')
                 ->select('total_harga')
-                ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->whereBetween('tgl_order', [$startWeek, $endWeek])
                 ->where('is_paid', 1)
                 ->sum('order.total_harga');
 
             $modalpenjualanMingguIni = Order::where("is_paid", true)
-                ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])->get()->map(function ($item) {
+                ->whereBetween('tgl_order', [$startWeek, $endWeek])->get()->map(function ($item) {
                     return $item->orderDetail->reduce(function ($total, $orderItem) {
                         return $total += $orderItem->modal * $orderItem->qty;
                     }, 0);
@@ -44,12 +47,12 @@ class BerandaController extends Controller
 
             $itemTerjualMingguIni = DB::table('order')
                 ->select('total_qty')
-                ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->whereBetween('tgl_order', [$startWeek, $endWeek])
                 ->where('is_paid', 1)
                 ->sum('order.total_qty');
             $orderMingguIni = DB::table('order')
                 ->select('created_at')
-                ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->whereBetween('tgl_order', [$startWeek, $endWeek])
                 ->count('order.created_at');
 
             $byweek = Order::select(DB::raw('sum(total_harga) as `total_penjulan`'), DB::raw("WEEKOFYEAR(tgl_order) AS week_of_year"))
@@ -62,10 +65,16 @@ class BerandaController extends Controller
             $weeklabels = $byweek->keys();
             $weekdata = $byweek->values();
 
-            $labels = now()->getDays();
+            $labels = collect(now()->getDays())->filter(function ($item)
+            {
+                return $item != 'Sunday';
+            });
+            $labels->push('Sunday');
+            $labels = $labels->values();
+
             $result = DB::table('order')
                 ->select("tgl_order", "total_harga")
-                ->whereBetween('tgl_order', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+                ->whereBetween('tgl_order', [$startWeek, $endWeek])
                 ->where('is_paid', 1)
                 ->get()
                 ->groupBy('tgl_order');

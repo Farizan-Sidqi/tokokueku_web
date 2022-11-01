@@ -35,12 +35,18 @@ class AuthController extends Controller
         }
 
         $user = User::create([
+            // 'nama' => $request->nama,
+            // 'email' => $request->email,
+            // 'level_akses_id' => 2,
+            // 'alamat' => $request->alamat,
+            // 'password' => Hash::make($request->password),
+            // 'no_wa' => $request->no_wa
             'nama' => $request->nama,
-            'email' => $request->email,
-            'level_akses_id' => 2,
             'alamat' => $request->alamat,
-            'password' => Hash::make($request->password),
-            'no_wa' => $request->no_wa
+            'level_akses_id' => 2,
+            'no_wa' => $request->no_wa,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
         ]);
 
         $token = $user->createToken('auth_token')->plainTextToken;
